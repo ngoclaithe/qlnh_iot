@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+{% block title %}Quản lý Thực đơn{% endblock %}
+{% block content %}
+<div class="menu-header">
+    <h2>Danh sách Món ăn/Đồ uống</h2>
+    <a href="{{ url_for('menu.create_menu_item') }}" class="btn-add">Thêm món/đồ uống mới</a>
+</div>
+
+<div class="filter-bar">
+    <form method="GET" class="filter-form">
+        <div class="filter-group">
+            <label for="category">Danh mục:</label>
+            <select name="category" id="category">
+                <option value="">Tất cả</option>
+                <option value="appetizer" {% if request.args.get('category') == 'appetizer' %}selected{% endif %}>Món khai vị</option>
+                <option value="main course" {% if request.args.get('category') == 'main course' %}selected{% endif %}>Món chính</option>
+                <option value="dessert" {% if request.args.get('category') == 'dessert' %}selected{% endif %}>Tráng miệng</option>
+                <option value="drink" {% if request.args.get('category') == 'drink' %}selected{% endif %}>Đồ uống</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="status">Trạng thái:</label>
+            <select name="status" id="status">
+                <option value="">Tất cả</option>
+                <option value="active" {% if request.args.get('status') == 'active' %}selected{% endif %}>Active</option>
+                <option value="inactive" {% if request.args.get('status') == 'inactive' %}selected{% endif %}>Inactive</option>
+            </select>
+        </div>
+        <button type="submit" class="btn-filter">Lọc</button>
+    </form>
+</div>
+
+<div class="menu-grid">
+    {% for item in menu_items %}
+    <div class="menu-card">
+        <div class="menu-image">
+            {% if item.image %}
+            <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.name }}">
+            {% else %}
+            <div class="no-image">Không có ảnh</div>
+            {% endif %}
+        </div>
+        <div class="menu-details">
+            <h3>{{ item.name }}</h3>
+            <p class="menu-description">{{ item.description }}</p>
+            <div class="menu-meta">
+                <span class="menu-price">{{ "{:,.0f}".format(item.price) }} VNĐ</span>
+                <span class="menu-category">
+                    {% if item.category == 'appetizer' %}
+                        Món khai vị
+                    {% elif item.category == 'main course' %}
+                        Món chính
+                    {% elif item.category == 'dessert' %}
+                        Tráng miệng
+                    {% elif item.category == 'drink' %}
+                        Đồ uống
+                    {% else %}
+                        {{ item.category }}
+                    {% endif %}
+                </span>
+                <span class="menu-status {{ 'active' if item.active else 'inactive' }}">
+                    {{ 'Active' if item.active else 'Inactive' }}
+                </span>
+            </div>
+            <div class="menu-actions">
+                <a href="{{ url_for('menu.edit_menu_item', id=item.id) }}" class="btn-edit">Sửa</a>
+                <a href="{{ url_for('menu.toggle_menu_item', id=item.id) }}" class="btn-toggle">
+                    {{ 'Ẩn' if item.active else 'Hiện' }}
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Phân trang -->
+<div class="pagination">
+    {% if page > 1 %}
+    <a href="{{ url_for('menu.list_menu', page=page-1, category=request.args.get('category'), status=request.args.get('status')) }}" class="pagination-link">&laquo; Trang trước</a>
+    {% endif %}
+    
+    <span class="pagination-info">Trang {{ page }} / {{ total_pages }}</span>
+    
+    {% if page < total_pages %}
+    <a href="{{ url_for('menu.list_menu', page=page+1, category=request.args.get('category'), status=request.args.get('status')) }}" class="pagination-link">Trang sau &raquo;</a>
+    {% endif %}
+</div>
+{% endblock %}

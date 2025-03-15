@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block title %}Thống kê Tổng hợp{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/statistical.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="statistical-index-container">
+  <h2>Thống kê Tổng hợp</h2>
+  
+  <div class="form-section">
+    <h3>Thống kê giao dịch kho theo ngày</h3>
+    <form action="{{ url_for('statistical.warehouse_daily') }}" method="GET">
+      <label for="date">Chọn ngày:</label>
+      <input type="date" id="date" name="date" required>
+      <button type="submit" class="btn btn-submit">Xem thống kê</button>
+    </form>
+  </div>
+  
+  <div class="form-section">
+    <h3>Thống kê tiền lương nhân công theo tháng</h3>
+    <form action="{{ url_for('statistical.salary_monthly') }}" method="GET">
+      <label for="month">Chọn tháng:</label>
+      <input type="month" id="month" name="month" required>
+      <br>
+      <label for="manager_rate">Lương Manager (VNĐ/giờ):</label>
+      <input type="number" id="manager_rate" name="manager_rate" step="1000" value="50000" required>
+      <br>
+      <label for="waiter_rate">Lương Waiter (VNĐ/giờ):</label>
+      <input type="number" id="waiter_rate" name="waiter_rate" step="1000" value="50000" required>
+      <br>
+      <label for="warehouse_rate">Lương Warehouse (VNĐ/giờ):</label>
+      <input type="number" id="warehouse_rate" name="warehouse_rate" step="1000" value="50000" required>
+      <br>
+      <button type="submit" class="btn btn-submit">Xem thống kê</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

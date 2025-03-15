@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block title %}Quản lý Nguyên liệu{% endblock %}
+
+{% block content %}
+<div class="ingredient-container">
+    <div class="header">
+        <h2>Danh sách Nguyên liệu</h2>
+        <a href="{{ url_for('ingredient.create_ingredient') }}" class="btn btn-create">Thêm Nguyên liệu</a>
+    </div>
+    <table class="ingredient-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ảnh</th>
+                <th>Tên</th>
+                <th>Nhà cung cấp</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ingredient in ingredients %}
+            <tr>
+                <td>{{ ingredient.id }}</td>
+                <td>
+                    {% if ingredient.image %}
+                    <img src="{{ ingredient.image }}" alt="{{ ingredient.name }}" class="ingredient-image-preview">
+                    {% else %}
+                    <span>Không có ảnh</span>
+                    {% endif %}
+                </td>
+                <td>{{ ingredient.name }}</td>
+                <td>{{ ingredient.name_supplier }}</td>
+                <td>
+                    <a href="{{ url_for('ingredient.edit_ingredient', ingredient_id=ingredient.id) }}" class="btn btn-edit">Sửa</a>
+                    <form action="{{ url_for('ingredient.delete_ingredient', ingredient_id=ingredient.id) }}" method="POST" onsubmit="return confirm('Bạn có chắc muốn xóa?');" style="display:inline;">
+                        <button type="submit" class="btn btn-delete">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block title %}Cập nhật Trạng thái Đơn hàng #{{ order.id }}{% endblock %}
+{% block content %}
+<div class="update-status-container" style="max-width:600px; margin:0 auto; padding:20px;">
+  <h2>Cập nhật Trạng thái Đơn hàng #{{ order.id }}</h2>
+  <form method="POST">
+    <div class="form-group">
+      <label for="status">Chọn trạng thái mới:</label>
+      <select name="status" id="status" required>
+        <option value="pending" {% if order.status == 'pending' %}selected{% endif %}>Chờ xử lý</option>
+        <option value="in_progress" {% if order.status == 'processing' %}selected{% endif %}>Đang chuẩn bị</option>
+        <option value="completed" {% if order.status == 'completed' %}selected{% endif %}>Hoàn thành</option>
+        <option value="cancelled" {% if order.status == 'cancelled' %}selected{% endif %}>Đã hủy</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-submit">Cập nhật</button>
+  </form>
+</div>
+{% endblock %}

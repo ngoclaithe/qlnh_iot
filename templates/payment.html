@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block title %}Thanh toán Đơn hàng{% endblock %}
+{% block content %}
+<div class="payment-container">
+  <h2>Thanh toán Đơn hàng #{{ order_id }}</h2>
+  <form method="POST">
+    <div class="form-group">
+      <label for="amount">Số tiền thanh toán (VNĐ):</label>
+      <input type="number" name="amount" id="amount" step="0.01" required>
+    </div>
+    <div class="form-group">
+      <label for="payment_type">Loại thanh toán:</label>
+      <select name="payment_type" id="payment_type" required>
+        <option value="cash">Tiền mặt</option>
+        <option value="card">Thẻ</option>
+        <option value="online">Trực tuyến</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="customer_name">Tên khách hàng:</label>
+      <input type="text" name="customer_name" id="customer_name" required>
+    </div>
+    <div class="form-group">
+      <label for="phone_number">Số điện thoại:</label>
+      <input type="text" name="phone_number" id="phone_number" required>
+    </div>
+    <button type="submit" class="btn btn-submit">Thanh toán</button>
+  </form>
+</div>
+{% endblock %}

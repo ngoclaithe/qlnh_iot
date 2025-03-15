@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block title %}Chấm Công{% endblock %}
+{% block content %}
+<h2>Chấm Công</h2>
+<form action="{{ url_for('attendance.check_in') }}" method="POST">
+    <button type="submit">Check-in</button>
+</form>
+<br>
+<h3>Lịch sử chấm công</h3>
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Ngày</th>
+            <th>Check-in</th>
+            <th>Check-out</th>
+            <th>Tổng giờ</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in attendances %}
+        <tr>
+            <td>{{ record.id }}</td>
+            <td>{{ record.date }}</td>
+            <td>{{ record.check_in }}</td>
+            <td>{{ record.check_out or '' }}</td>
+            <td>{{ record.total_hours or '' }}</td>
+            <td>
+                {% if not record.check_out %}
+                <form action="{{ url_for('attendance.check_out', attendance_id=record.id) }}" method="POST">
+                    <button type="submit">Check-out</button>
+                </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

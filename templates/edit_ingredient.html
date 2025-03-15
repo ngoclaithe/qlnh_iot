@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block title %}Chỉnh sửa Nguyên liệu{% endblock %}
+
+{% block content %}
+<div class="ingredient-form-container">
+    <h2>Chỉnh sửa Nguyên liệu</h2>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="name">Tên Nguyên liệu:</label>
+            <input type="text" name="name" id="name" value="{{ ingredient.name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="name_supplier">Tên nhà cung cấp:</label>
+            <input type="text" name="name_supplier" id="name_supplier" value="{{ ingredient.name_supplier }}" required>
+        </div>
+        <div class="form-group">
+            <label for="image">Ảnh Nguyên liệu (upload mới nếu cần):</label>
+            <input type="file" name="image" id="image">
+            {% if ingredient.image %}
+            <div class="current-image">
+                <img src="{{ ingredient.image }}" alt="{{ ingredient.name }}">
+            </div>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="min_stock">Tồn tối thiểu:</label>
+            <input type="number" name="min_stock" id="min_stock" step="0.01" value="{{ ingredient.min_stock }}" required>
+        </div>
+        <button type="submit" class="btn btn-submit">Cập nhật Nguyên liệu</button>
+    </form>
+</div>
+{% endblock %}

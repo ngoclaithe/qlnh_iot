@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Restaurant Manager{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/create_order.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/order.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ingredient.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/statistical.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/manage_user.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/payment.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    {% if not session.user_id %}
+      <script>window.location = "{{ url_for('auth.login_page') }}";</script>
+    {% endif %}
+    
+    <header class="top-header">
+        <div class="header-container">
+          <div class="logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo-img">
+            <h1>Nhà hàng Vũ Long</h1>
+        </div>
+        
+            
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav class="main-nav" id="mainNav">
+                <ul class="nav-list">
+                    {% if session.role == 'admin' %}
+                      <li><a href="{{ url_for('main.dashboard') }}"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+                      
+                      <li class="dropdown">
+                        <a href="#"><i class="fas fa-utensils"></i> <span>Quản lý</span></a>
+                        <div class="dropdown-content">
+                          <a href="{{ url_for('orders.list_orders') }}"><i class="fas fa-shopping-cart"></i> Đơn hàng</a>
+                          <a href="{{ url_for('payment.list_payments') }}"><i class="fas fa-credit-card"></i> Thanh toán</a>
+                          <a href="{{ url_for('menu.list_menu') }}"><i class="fas fa-list-alt"></i> Thực đơn</a>
+                          <a href="{{ url_for('ingredient.list_ingredients') }}"><i class="fas fa-carrot"></i> Nguyên liệu</a>
+                          <a href="{{ url_for('warehouse.list_ingredients') }}"><i class="fas fa-warehouse"></i> Kho</a>
+                        </div>
+                      </li>
+                      
+                      <li><a href="{{ url_for('attendance.list_attendance') }}"><i class="fas fa-calendar-check"></i> <span>Chấm công</span></a></li>
+                      <li><a href="{{ url_for('statistical.statistical_index') }}"><i class="fas fa-chart-bar"></i> <span>Thống kê</span></a></li>
+                      <li><a href="{{ url_for('manage_user.list_users') }}"><i class="fas fa-users"></i> <span>Quản lý người dùng</span></a></li>
+
+                    {% elif session.role == 'manager' %}
+                      <li class="dropdown"><a href="#"><i class="fas fa-utensils"></i> <span>Quản lý</span></a>
+                        <div class="dropdown-content">
+                          <a href="{{ url_for('orders.list_orders') }}"><i class="fas fa-shopping-cart"></i> Đơn hàng</a>
+                          <a href="{{ url_for('payment.list_payments') }}"><i class="fas fa-credit-card"></i> Thanh toán</a>
+                          <a href="{{ url_for('menu.list_menu') }}"><i class="fas fa-list-alt"></i> Thực đơn</a>
+                          <a href="{{ url_for('warehouse.list_ingredients') }}"><i class="fas fa-warehouse"></i> Kho</a>
+                        </div>
+                      </li>
+                      
+                      <li><a href="{{ url_for('attendance.list_attendance') }}"><i class="fas fa-calendar-check"></i> <span>Chấm công</span></a></li>
+                      <li><a href="{{ url_for('statistical.statistical_index') }}"><i class="fas fa-chart-bar"></i> <span>Thống kê</span></a></li>
+                    
+                    {% elif session.role == 'waiter' %}
+                      <li><a href="{{ url_for('orders.list_orders') }}"><i class="fas fa-shopping-cart"></i> <span>Đơn hàng</span></a></li>
+                      <li><a href="{{ url_for('payment.list_payments') }}"><i class="fas fa-credit-card"></i> <span>Thanh toán</span></a></li>
+                      <li><a href="{{ url_for('attendance.list_attendance') }}"><i class="fas fa-calendar-check"></i> <span>Chấm công</span></a></li>
+                    
+                    {% elif session.role == 'warehouse' %}
+                      <li><a href="{{ url_for('ingredient.list_ingredients') }}"><i class="fas fa-carrot"></i> <span>Nguyên liệu</span></a></li>
+                      <li><a href="{{ url_for('warehouse.list_ingredients') }}"><i class="fas fa-warehouse"></i> <span>Kho</span></a></li>
+                      <li><a href="{{ url_for('attendance.list_attendance') }}"><i class="fas fa-calendar-check"></i> <span>Chấm công</span></a></li>
+                    {% endif %}
+                    
+                    <li><a href="{{ url_for('main.home') }}"><i class="fas fa-home"></i> <span>Trang chủ</span></a></li>
+                    <li><a href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt"></i> <span>Đăng xuất</span></a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="container">
+        <main class="content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                <div class="flashes">
+                  {% for category, message in messages %}
+                    <div class="flash {{ category }}">
+                      <span>{{ message }}</span>
+                      <button class="flash-close" onclick="this.parentElement.style.display='none';">&times;</button>
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}
+            
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    
+    <footer class="footer">
+      <div class="footer-content" style="text-align: center; padding: 20px 0;">
+        <p>&copy; 2025 Nhà Hàng Vũ Long. All Rights Reserved.</p>
+        <p>
+          Follow us on:
+          <a href="https://www.facebook.com/yourpage" target="_blank" style="margin: 0 5px;">Facebook</a> |
+          <a href="https://www.twitter.com/yourprofile" target="_blank" style="margin: 0 5px;">Twitter</a> |
+          <a href="https://www.instagram.com/yourprofile" target="_blank" style="margin: 0 5px;">Instagram</a>
+        </p>
+        <p>Contact us: <a href="mailto:info@restaurantmanager.com">info@restaurantmanager.com</a></p>
+      </div>
+    </footer>
+    
+
+    <script>
+        document.getElementById('mobileMenuToggle').addEventListener('click', function() {
+            document.getElementById('mainNav').classList.toggle('active');
+        });
+        
+        if (window.innerWidth <= 768) {
+            const dropdowns = document.querySelectorAll('.dropdown');
+            dropdowns.forEach(dropdown => {
+                dropdown.addEventListener('click', function(e) {
+                    if (e.target.parentNode === this || e.target === this.querySelector('a') || e.target === this.querySelector('a i') || e.target === this.querySelector('a span')) {
+                        e.preventDefault();
+                        this.classList.toggle('active');
+                    }
+                });
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('.nav-list a, .dropdown-content a');
+            
+            navLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && currentPath === href) {
+                    link.style.backgroundColor = 'var(--header-hover)';
+                    
+                    const parentDropdown = link.closest('.dropdown');
+                    if (parentDropdown) {
+                        const dropdownToggle = parentDropdown.querySelector('a');
+                        dropdownToggle.style.backgroundColor = 'var(--header-hover)';
+                    }
+                }
+            });
+            
+            const flashMessages = document.querySelectorAll('.flash');
+            if (flashMessages.length > 0) {
+                setTimeout(() => {
+                    flashMessages.forEach(message => {
+                        message.style.opacity = '0';
+                        message.style.height = '0';
+                        message.style.padding = '0';
+                        message.style.margin = '0';
+                        message.style.overflow = 'hidden';
+                        message.style.transition = 'all 0.5s ease';
+                    });
+                }, 5000);
+            }
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 * index);
+            });
+        });
+    </script>
+    <script src="{{ url_for('static', filename='js/order-create.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

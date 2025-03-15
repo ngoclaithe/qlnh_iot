@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="hello-container">
+  <h2>Xin chào, {{ session.username }}!</h2>
+  <p>Bạn đã đăng nhập thành công với vai trò: {{ session.role | capitalize }}.</p>
+</div>
+{% endblock %}

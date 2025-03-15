@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block title %}Giao dịch Kho{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/warehouse.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="warehouse-transaction-container">
+  <h2>Giao dịch Kho</h2>
+  <form method="POST">
+    <div class="form-group">
+      <label for="ingredient_id">Chọn nguyên liệu:</label>
+      <select name="ingredient_id" id="ingredient_id">
+        {% for ingredient in ingredients %}
+        <option value="{{ ingredient.id }}">{{ ingredient.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="transaction_type">Loại giao dịch:</label>
+      <select name="transaction_type" id="transaction_type">
+        <option value="IN">Nhập Kho</option>
+        <option value="OUT">Xuất Kho</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="quantity">Số lượng:</label>
+      <input type="number" name="quantity" id="quantity" step="0.01" required>
+    </div>
+    <div class="form-group">
+      <label for="price">Giá (đơn vị):</label>
+      <input type="number" name="price" id="price" step="0.01" required>
+    </div>
+    <div class="form-group">
+      <label for="note">Ghi chú:</label>
+      <textarea name="note" id="note"></textarea>
+    </div>
+    <button type="submit" class="btn btn-submit">Thực hiện giao dịch</button>
+  </form>
+</div>
+{% endblock %}

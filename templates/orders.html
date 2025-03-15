@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+{% block title %}Quản lý Đơn hàng{% endblock %}
+
+{% block content %}
+<div class="orders-container" style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+    <!-- Nút tạo đơn hàng mới ở đầu trang -->
+    <div style="margin-bottom: 20px;">
+        <a href="{{ url_for('orders.create_order') }}" class="btn" style="padding: 10px 20px; background-color: #3498db; color: #fff; border-radius: 4px; text-decoration: none;">Tạo đơn hàng mới</a>
+    </div>
+
+    <h2 class="page-title" style="margin-bottom: 20px;">Danh sách Đơn hàng</h2>
+    
+    {% if orders %}
+    <table class="orders-table" style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Thời gian</th>
+                <th>Nhân viên</th>
+                <th>Trạng thái</th>
+                <th>Tổng tiền</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>#{{ order.id }}</td>
+                <td class="timestamp">{{ order.order_time.strftime('%d/%m/%Y %H:%M') }}</td>
+                <td class="waiter-name">
+                    {% if order.waiter %}
+                        {{ order.waiter.full_name }}
+                    {% else %}
+                        Không có thông tin
+                    {% endif %}
+                </td>
+                <td>
+                    <span class="status-badge status-{{ order.status }}">
+                        {% if order.status == 'pending' %}
+                            Chờ xử lý
+                        {% elif order.status == 'processing' %}
+                            Đang chuẩn bị
+                        {% elif order.status == 'completed' %}
+                            Hoàn thành
+                        {% elif order.status == 'cancelled' %}
+                            Đã hủy
+                        {% else %}
+                            {{ order.status }}
+                        {% endif %}
+                    </span>
+                </td>
+                <td class="price">{{ "{:,.0f}".format(order.total_amount) }} VNĐ</td>
+                <td class="actions-column">
+                    <a href="{{ url_for('orders.view_order', order_id=order.id) }}" class="btn btn-view" style="padding: 6px 12px; background-color: #2ecc71; color: #fff; border-radius: 4px; text-decoration: none;">Xem chi tiết</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-orders" style="margin-top: 20px;">
+        <p>Chưa có đơn hàng nào được tạo. Hãy tạo đơn hàng mới.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

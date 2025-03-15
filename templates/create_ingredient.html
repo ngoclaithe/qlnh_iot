@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block title %}Thêm Nguyên liệu Mới{% endblock %}
+
+{% block content %}
+<div class="ingredient-form-container">
+  <h2>Thêm Nguyên liệu Mới</h2>
+  <form method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="name">Tên Nguyên liệu:</label>
+      <input type="text" name="name" id="name" required>
+    </div>
+    <div class="form-group">
+      <label for="unit">Đơn vị (vd: kg, liter, cái):</label>
+      <input type="text" name="unit" id="unit" required>
+    </div>
+    <div class="form-group">
+      <label for="image">Ảnh Nguyên liệu:</label>
+      <input type="file" name="image" id="image">
+    </div>
+    <div class="form-group">
+        <label for="name_supllier">Đơn vị cung cấp:</label>
+        <input type="text" name="name_supllier" id="name_supllier">
+      </div>
+    <div class="form-group">
+      <label for="current_stock">Tồn hiện tại:</label>
+      <input type="number" name="current_stock" id="current_stock" step="0.01" value="0.0" required>
+    </div>
+    <div class="form-group">
+      <label for="min_stock">Tồn tối thiểu:</label>
+      <input type="number" name="min_stock" id="min_stock" step="0.01" value="0.0" required>
+    </div>
+    <button type="submit" class="btn btn-submit">Thêm Nguyên liệu</button>
+  </form>
+</div>
+{% endblock %}

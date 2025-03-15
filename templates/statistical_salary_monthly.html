@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block title %}Thống kê Tiền Lương Nhân Công Theo Tháng{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/statistical.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="statistical-container">
+  <h2>Thống kê Tiền Lương Nhân Công Theo Tháng</h2>
+  {% if selected_month %}
+    <p>Tháng: {{ selected_month }}</p>
+    <table class="salary-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Họ và tên</th>
+          <th>Tài khoản</th>
+          <th>Role</th>
+          <th>Tổng giờ làm</th>
+          <th>Tổng lương (VNĐ)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for stat in salary_stats %}
+        <tr>
+          <td>{{ stat.user_id }}</td>
+          <td>{{ stat.full_name }}</td>
+          <td>{{ stat.username }}</td>
+          <td>{{ stat.role }}</td>
+          <td>{{ stat.total_hours }}</td>
+          <td>{{ "{:,.0f}".format(stat.total_salary) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>Vui lòng chọn tháng để xem thống kê.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block title %}Dashboard Giám Sát Kho Lạnh{% endblock %}
+{% block head %}
+  {{ super() }}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gauge.js/1.3.7/gauge.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.22.0/firebase-app-compat.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.22.0/firebase-database-compat.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+{% block content %}
+<div class="dashboard-header">
+  <h2>Giám Sát Kho Lạnh</h2>
+  <div class="user-info">Thời gian cập nhật: <span id="update-time">--:--:--</span></div>
+</div>
+
+<div class="stats-container">
+  <div class="gauge-card">
+    <h3>Nhiệt Độ</h3>
+    <div class="gauge-container">
+      <canvas id="temperature-gauge"></canvas>
+    </div>
+    <div class="current-value"><span id="temperature-value">--</span> °C</div>
+  </div>
+  <div class="gauge-card">
+    <h3>Độ Ẩm</h3>
+    <div class="gauge-container">
+      <canvas id="humidity-gauge"></canvas>
+    </div>
+    <div class="current-value"><span id="humidity-value">--</span> %</div>
+  </div>
+</div>
+
+<div class="chart-container">
+  <canvas id="temperature-chart"></canvas>
+</div>
+<div class="chart-container">
+  <canvas id="humidity-chart"></canvas>
+</div>
+
+{% endblock %}
+{% block scripts %}
+  {{ super() }}
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

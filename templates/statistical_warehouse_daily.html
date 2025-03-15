@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block title %}Thống kê Giao dịch Kho Theo Ngày{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/statistical.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="statistical-container">
+  <h2>Thống kê Giao dịch Kho Theo Ngày</h2>
+  {% if selected_date %}
+    <p>Ngày: {{ selected_date }}</p>
+    <table class="warehouse-daily-table">
+      <thead>
+        <tr>
+          <th>Loại giao dịch</th>
+          <th>Nguyên liệu</th>
+          <th>Số lượng</th>
+          <th>Giá trị</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for rec in stats.records %}
+        <tr>
+          <td>{{ rec.transaction_type }}</td>
+          <td>{{ rec.ingredient }}</td>
+          <td>{{ rec.quantity }}</td>
+          <td>{{ "{:,.0f}".format(rec.value) }} VNĐ</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="summary">
+      <p><strong>Tổng tiền nhập hàng: </strong>{{ "{:,.0f}".format(stats.total_import_value) }} VNĐ</p>
+    </div>
+    <div class="pdf-export">
+      <a href="{{ url_for('statistical.warehouse_daily_pdf', date=selected_date) }}" class="btn btn-export">Xuất PDF</a>
+    </div>
+  {% else %}
+    <p>Vui lòng chọn ngày để xem thống kê.</p>
+  {% endif %}
+</div>
+{% endblock %}

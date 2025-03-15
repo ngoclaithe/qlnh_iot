@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Thống kê Giao dịch Kho - {{ selected_date }}</title>
+  <style>
+    body { font-family: 'Roboto', sans-serif; padding: 20px; }
+    h2 { text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+    th { background-color: #f8f9fa; }
+    .summary { margin-top: 20px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h2>Thống kê Giao dịch Kho</h2>
+  <p>Ngày: {{ selected_date }}</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Loại giao dịch</th>
+        <th>Nguyên liệu</th>
+        <th>Số lượng</th>
+        <th>Giá trị</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for rec in stats.records %}
+      <tr>
+        <td>{{ rec.transaction_type }}</td>
+        <td>{{ rec.ingredient }}</td>
+        <td>{{ rec.quantity }}</td>
+        <td>{{ "{:,.0f}".format(rec.value) }} VNĐ</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="summary">
+    <p><strong>Tổng tiền nhập hàng: </strong>{{ "{:,.0f}".format(stats.total_import_value) }} VNĐ</p>
+  </div>
+</body>
+</html>

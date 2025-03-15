@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+{% block title %}Quản lý Kho{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/warehouse.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="warehouse-container">
+  <div class="warehouse-header">
+    <h2>Danh sách Nguyên liệu trong Kho</h2>
+    <div class="warehouse-actions">
+      <a href="{{ url_for('warehouse.transaction') }}" class="btn btn-transaction">Giao dịch kho</a>
+    </div>
+  </div>
+  <table class="warehouse-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Tên</th>
+        <th>Đơn vị</th>
+        <th>Tồn hiện tại</th>
+        <th>Tồn tối thiểu</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for ingredient in ingredients %}
+      <tr>
+        <td>{{ ingredient.id }}</td>
+        <td>{{ ingredient.name }}</td>
+        <td>{{ ingredient.unit }}</td>
+        <td>{{ ingredient.current_stock }}</td>
+        <td>{{ ingredient.min_stock }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

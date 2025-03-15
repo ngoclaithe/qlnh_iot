@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+{% block title %}Quản lý Tài khoản Nhân viên{% endblock %}
+
+{% block content %}
+<div class="manage-user-container">
+  <h2>Quản lý Tài khoản Nhân viên</h2>
+  
+  <div class="user-list">
+    <h3>Danh sách Tài khoản</h3>
+    {% if users %}
+    <table class="user-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Họ tên</th>
+          <th>Tài khoản</th>
+          <th>Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>{{ user.id }}</td>
+          <td>{{ user.full_name }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.role }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>Không có tài khoản nào.</p>
+    {% endif %}
+  </div>
+  
+  <div class="user-form">
+    <h3>Tạo Tài khoản Nhân viên Mới</h3>
+    <form action="{{ url_for('manage_user.create_user') }}" method="POST">
+      <div class="form-group">
+        <label for="full_name">Họ tên:</label>
+        <input type="text" name="full_name" id="full_name" required>
+      </div>
+      <div class="form-group">
+        <label for="username">Tài khoản (Username):</label>
+        <input type="text" name="username" id="username" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Mật khẩu:</label>
+        <input type="password" name="password" id="password" required>
+      </div>
+      <div class="form-group">
+        <label for="role">Chọn Role:</label>
+        <select name="role" id="role" required>
+          <option value="manager">Manager</option>
+          <option value="waiter">Waiter</option>
+          <option value="warehouse">Warehouse</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-submit">Tạo Tài khoản</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,118 @@
+.statistical-container {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 20px;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f9f9f9;
+}
+
+.statistical-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.form-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.form-section form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.form-section label {
+    font-weight: 500;
+    color: #555;
+}
+
+.btn-submit {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #2980b9;
+}
+
+/* Bảng thống kê giao dịch kho */
+.warehouse-daily-table,
+.salary-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.warehouse-daily-table th, 
+.warehouse-daily-table td,
+.salary-table th, 
+.salary-table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    color: #555;
+}
+
+.warehouse-daily-table th,
+.salary-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+.warehouse-daily-table tbody tr:hover,
+.salary-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Nút xuất PDF */
+.pdf-export {
+    text-align: right;
+    margin-top: 10px;
+}
+
+.btn-export {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: #fff;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-export:hover {
+    background-color: #2980b9;
+}
+
+/* Statistical index page */
+.statistical-index-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    font-family: 'Roboto', sans-serif;
+}
+
+.statistical-index-container h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}

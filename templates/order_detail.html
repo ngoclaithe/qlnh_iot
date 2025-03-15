@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block title %}Chi tiết Đơn hàng #{{ order.id }}{% endblock %}
+
+{% block content %}
+<div class="order-detail-container" style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+    <h2 class="page-title" style="margin-bottom: 20px;">Chi tiết Đơn hàng #{{ order.id }}</h2>
+    
+    <div class="order-info" style="background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 30px;">
+        <p><strong>Thời gian đặt:</strong> {{ order.order_time.strftime('%d/%m/%Y %H:%M') }}</p>
+        <p>
+            <strong>Nhân viên:</strong> 
+            {% if order.waiter %}
+                {{ order.waiter.full_name }}
+            {% else %}
+                Không có thông tin
+            {% endif %}
+        </p>
+        <p>
+            <strong>Trạng thái:</strong> 
+            <span class="status-badge status-{{ order.status }}" style="padding: 5px 10px; border-radius: 4px; background-color: {% if order.status == 'pending' %}#f0ad4e{% elif order.status == 'processing' %}#5bc0de{% elif order.status == 'completed' %}#5cb85c{% elif order.status == 'cancelled' %}#d9534f{% else %}#ccc{% endif %}; color: #fff;">
+                {% if order.status == 'pending' %}Chờ xử lý{% elif order.status == 'processing' %}Đang chuẩn bị{% elif order.status == 'completed' %}Hoàn thành{% elif order.status == 'cancelled' %}Đã hủy{% else %}{{ order.status }}{% endif %}
+            </span>
+        </p>
+        <p><strong>Tổng tiền:</strong> {{ "{:,.0f}".format(order.total_amount) }} VNĐ</p>
+    </div>
+
+    <h3 style="margin-bottom: 15px;">Danh sách món ăn</h3>
+    {% if order.order_items %}
+    <table class="order-items-table" style="width: 100%; border-collapse: collapse; background-color: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 30px;">
+        <thead style="background-color: #f8f9fa;">
+            <tr>
+                <th style="padding: 10px 15px; text-align: left;">Món ăn</th>
+                <th style="padding: 10px 15px; text-align: left;">Số lượng</th>
+                <th style="padding: 10px 15px; text-align: left;">Ghi chú</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order.order_items %}
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 10px 15px;">{{ item.menu_item.name }}</td>
+                <td style="padding: 10px 15px;">{{ item.quantity }}</td>
+                <td style="padding: 10px 15px;">{{ item.note }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="background-color: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">Không có món ăn nào được thêm vào.</p>
+    {% endif %}
+    
+    <div style="display: flex; gap: 10px;">
+        <a href="{{ url_for('orders.list_orders') }}" class="btn btn-back" style="padding: 10px 20px; background-color: #3498db; color: #fff; border-radius: 4px; text-decoration: none; transition: background-color 0.3s;">Quay lại danh sách đơn hàng</a>
+        <a href="{{ url_for('orders.update_order_status', order_id=order.id) }}" class="btn btn-update" style="padding: 10px 20px; background-color: #f39c12; color: #fff; border-radius: 4px; text-decoration: none; transition: background-color 0.3s;">Cập nhật đơn hàng</a>
+        <a href="{{ url_for('payment.create_payment', order_id=order.id) }}" class="btn btn-payment" style="padding: 10px 20px; background-color: #2ecc71; color: #fff; border-radius: 4px; text-decoration: none; transition: background-color 0.3s;">Thanh toán</a>
+    </div>
+    
+</div>
+{% endblock %}

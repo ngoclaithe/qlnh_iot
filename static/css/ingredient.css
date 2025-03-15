@@ -1,0 +1,122 @@
+/* Container tổng thể cho trang danh sách nguyên liệu */
+.ingredient-container {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f9f9f9;
+}
+
+/* Phần header */
+.ingredient-container .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+.ingredient-container h2 {
+    margin: 0;
+    color: #333;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* Style cho các nút */
+.btn {
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+    color: #fff;
+    display: inline-block;
+}
+
+.btn-create {
+    background-color: #2ecc71;
+}
+
+.btn-create:hover {
+    background-color: #27ae60;
+}
+
+.btn-edit {
+    background-color: #3498db;
+    margin-right: 5px;
+}
+
+.btn-edit:hover {
+    background-color: #2980b9;
+}
+
+.btn-delete {
+    background-color: #e74c3c;
+}
+
+.btn-delete:hover {
+    background-color: #c0392b;
+}
+
+/* Style cho bảng danh sách nguyên liệu */
+.ingredient-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.ingredient-table thead {
+    background-color: #f8f9fa;
+}
+
+.ingredient-table th, 
+.ingredient-table td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    color: #555;
+}
+
+.ingredient-table th {
+    font-weight: 600;
+    color: #333;
+}
+
+.ingredient-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.ingredient-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.ingredient-image-preview {
+    max-width: 80px;
+    height: auto;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+/* Responsive cho màn hình nhỏ */
+@media (max-width: 768px) {
+    .ingredient-container {
+        padding: 10px;
+    }
+    .ingredient-container .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .ingredient-container .header h2 {
+        margin-bottom: 10px;
+    }
+    .ingredient-table th, .ingredient-table td {
+        padding: 10px;
+        font-size: 12px;
+    }
+}

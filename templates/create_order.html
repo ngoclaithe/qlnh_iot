@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+{% block title %}Tạo Đơn Hàng Mới{% endblock %}
+
+{% block content %}
+<div class="create-order-container">
+    <h2 class="page-title">Tạo Đơn Hàng Mới</h2>
+    
+    <form method="POST" action="{{ url_for('orders.create_order') }}">
+        <div class="order-form-container">
+            <!-- Phần tìm kiếm món -->
+            <div class="menu-section">
+                <h3 class="section-title">Menu</h3>
+                
+                <div class="search-box">
+                    <input type="text" id="search-menu" class="search-input" placeholder="Tìm kiếm món...">
+                    <button type="button" class="search-btn">Tìm</button>
+                </div>
+                
+                <div class="category-filter">
+                    <button type="button" class="category-btn active" data-category="all">Tất cả</button>
+                    {% set categories = [] %}
+                    {% for item in menu_items %}
+                        {% if item.category not in categories %}
+                            {% set categories = categories + [item.category] %}
+                            <button type="button" class="category-btn" data-category="{{ item.category }}">
+                                {{ item.category }}
+                            </button>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                
+                <div class="menu-items">
+                    {% for item in menu_items %}
+                    <div class="menu-item" data-id="{{ item.id }}" data-category="{{ item.category }}">
+                        <div>
+                            <div class="menu-item-name">{{ item.name }}</div>
+                            <div class="menu-item-description">{{ item.description }}</div>
+                        </div>
+                        <div>
+                            <div class="menu-item-price" data-price="{{ item.price }}">{{ "{:,.0f}".format(item.price) }} VNĐ</div>
+                            <button type="button" class="add-item-btn">+ Thêm</button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="cart-section">
+                <h3 class="section-title">Giỏ hàng</h3>
+                
+                <div id="cart-items" class="cart-items">
+                    
+                </div>
+                
+                <div class="order-summary">
+                    <div class="total-amount" id="total-amount">0 VNĐ</div>
+                    <input type="hidden" name="total_amount" id="total-amount-input" value="0">
+                    <button type="submit" class="submit-order">Tạo đơn hàng</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
