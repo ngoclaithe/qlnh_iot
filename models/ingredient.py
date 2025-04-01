@@ -11,7 +11,6 @@ class Ingredient(db.Model):
     current_stock = db.Column(db.Float, default=0.0)
     min_stock = db.Column(db.Float, default=0.0)
     
-    # Quan hệ với các giao dịch kho
     transactions = db.relationship("WarehouseTransaction", backref="ingredient", lazy=True)
 
     def __repr__(self):

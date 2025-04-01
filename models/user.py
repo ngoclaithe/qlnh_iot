@@ -11,7 +11,6 @@ class User(db.Model):
     role = db.Column(db.String(20), nullable=False)  # admin, manager, waiter, warehouse
     active = db.Column(db.Boolean, default=True)
     
-    # Quan hệ với đơn hàng và chấm công, giao dịch kho
     orders = db.relationship("Order", backref="waiter", lazy=True)
     attendances = db.relationship("Attendance", backref="user", lazy=True)
     warehouse_transactions = db.relationship("WarehouseTransaction", backref="operator", lazy=True)

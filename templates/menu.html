@@ -62,6 +62,16 @@
                     {{ 'Active' if item.active else 'Inactive' }}
                 </span>
             </div>
+            <div class="menu-inventory">
+                <span class="inventory-label">Tồn kho:</span>
+                <span class="inventory-value">
+                    {% if item.inventory is none %}
+                    Không giới hạn
+                    {% else %}
+                    {{ item.inventory }}
+                    {% endif %}
+                </span>
+            </div>
             <div class="menu-actions">
                 <a href="{{ url_for('menu.edit_menu_item', id=item.id) }}" class="btn-edit">Sửa</a>
                 <a href="{{ url_for('menu.toggle_menu_item', id=item.id) }}" class="btn-toggle">
@@ -73,7 +83,6 @@
     {% endfor %}
 </div>
 
-<!-- Phân trang -->
 <div class="pagination">
     {% if page > 1 %}
     <a href="{{ url_for('menu.list_menu', page=page-1, category=request.args.get('category'), status=request.args.get('status')) }}" class="pagination-link">&laquo; Trang trước</a>

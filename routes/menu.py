@@ -45,6 +45,13 @@ def create_menu_item():
         price = float(request.form.get('price'))
         category = request.form.get('category')
         active = True if request.form.get('active') == 'on' else False
+        
+        inventory = request.form.get('inventory')
+        if inventory and inventory.strip():
+            inventory = int(inventory)
+        else:
+            inventory = None
+        
         image_file = request.files.get('image')
         image_path = None
         
@@ -67,7 +74,8 @@ def create_menu_item():
             price=price,
             category=category, 
             active=active, 
-            image=image_path
+            image=image_path,
+            inventory=inventory  
         )
         
         db.session.add(menu_item)
@@ -87,6 +95,12 @@ def edit_menu_item(id):
         menu_item.price = float(request.form.get('price'))
         menu_item.category = request.form.get('category')
         menu_item.active = True if request.form.get('active') == 'on' else False
+        
+        inventory = request.form.get('inventory')
+        if inventory and inventory.strip():
+            menu_item.inventory = int(inventory)
+        else:
+            menu_item.inventory = None
         
         image_file = request.files.get('image')
         if image_file and image_file.filename:

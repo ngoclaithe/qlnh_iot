@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/manage_user.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/payment.css') }}">
     {% block head %}{% endblock %}
+    {% block styles %}{% endblock %}
 </head>
 <body>
     {% if not session.user_id %}

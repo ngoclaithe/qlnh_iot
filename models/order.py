@@ -10,7 +10,6 @@ class Order(db.Model):
     status = db.Column(db.String(50), nullable=False)  # pending, in_progress, completed, canceled
     total_amount = db.Column(db.Float, default=0.0)
     
-    # Quan hệ với order items
     order_items = db.relationship("OrderItem", backref="order", lazy=True)
 
     def __repr__(self):
