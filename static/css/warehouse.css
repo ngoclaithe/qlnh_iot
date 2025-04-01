@@ -2,7 +2,7 @@
     max-width: 1200px;
     margin: 40px auto;
     padding: 20px;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 .warehouse-header {
@@ -66,4 +66,10 @@
 
 .warehouse-table tbody tr:last-child {
     border-bottom: none;
+}
+
+.low-stock {
+    background-color: #ffcccc;
+    color: #cc0000;
+    font-weight: bold;
 }

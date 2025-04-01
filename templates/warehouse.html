@@ -10,6 +10,7 @@
   <div class="warehouse-header">
     <h2>Danh sách Nguyên liệu trong Kho</h2>
     <div class="warehouse-actions">
+      <a href="{{ url_for('warehouse.daily_transaction') }}" class="btn btn-transaction">Ca làm việc</a>
       <a href="{{ url_for('warehouse.transaction') }}" class="btn btn-transaction">Giao dịch kho</a>
     </div>
   </div>
@@ -21,6 +22,7 @@
         <th>Đơn vị</th>
         <th>Tồn hiện tại</th>
         <th>Tồn tối thiểu</th>
+        <th>Tồn định mức</th>
       </tr>
     </thead>
     <tbody>
@@ -29,8 +31,9 @@
         <td>{{ ingredient.id }}</td>
         <td>{{ ingredient.name }}</td>
         <td>{{ ingredient.unit }}</td>
-        <td>{{ ingredient.current_stock }}</td>
+        <td {% if ingredient.current_stock < ingredient.min_stock %}class="low-stock"{% endif %}>{{ ingredient.current_stock }}</td>
         <td>{{ ingredient.min_stock }}</td>
+        <td>{{ ingredient.target_stock }}</td>
       </tr>
       {% endfor %}
     </tbody>

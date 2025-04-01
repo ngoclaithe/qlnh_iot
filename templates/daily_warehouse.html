@@ -1,0 +1,124 @@
+{% extends "layout.html" %}
+{% block title %}Giao dịch bếp hàng ngày{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/kitchen_transaction.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="kitchen-transaction-container">
+  <div class="kitchen-transaction-header">
+    <h2>Giao dịch bếp hàng ngày</h2>
+    <div class="date-picker-container">
+      <label for="transaction-date">Ngày:</label>
+      <input type="text" id="transaction-date" class="datepicker">
+    </div>
+  </div>
+  
+  <table class="kitchen-transaction-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Tên</th>
+        <th>Đơn vị</th>
+        <th>Tồn hiện tại</th>
+        <th>Dự kiến</th>
+        <th>Tổng sử dụng</th>
+        <th>Chênh lệch</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for ingredient in ingredients %}
+      <tr data-id="{{ ingredient.id }}" data-max="{{ ingredient.current_stock }}">
+        <td>{{ ingredient.id }}</td>
+        <td>{{ ingredient.name }}</td>
+        <td>{{ ingredient.unit }}</td>
+        <td class="current-stock">{{ ingredient.current_stock }}</td>
+        <td>
+          <input type="number" class="prev-used" min="0" max="{{ ingredient.current_stock }}" value="0">
+        </td>
+        <td>
+          <input type="number" class="total-used" min="0" max="{{ ingredient.current_stock }}" value="0">
+        </td>
+        <td class="discrepancy">0</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  <div class="transaction-actions">
+    <button id="approve-btn" class="btn btn-primary">Phê duyệt</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js"></script>
+<script>
+    $(document).ready(function() {
+
+      $('.datepicker').datepicker({
+        format: 'dd/mm/yyyy',
+        autoclose: true,
+        todayHighlight: true,
+        defaultDate: new Date()
+      });
+      
+      $('.datepicker').datepicker('setDate', new Date());
+      
+      $('.prev-used, .total-used').on('input', function() {
+        const row = $(this).closest('tr');
+        const maxValue = parseInt(row.data('max'));
+        const prevUsed = parseInt(row.find('.prev-used').val()) || 0;
+        const totalUsed = parseInt(row.find('.total-used').val()) || 0;
+        
+        if(prevUsed > maxValue) {
+          row.find('.prev-used').val(maxValue);
+        }
+        
+        if(totalUsed > maxValue) {
+          row.find('.total-used').val(maxValue);
+        }
+        
+        const discrepancy = prevUsed - totalUsed;
+        row.find('.discrepancy').text(discrepancy);
+      });
+      
+      $('#approve-btn').click(function() {
+        const transactionDate = $('.datepicker').datepicker('getDate');
+        const updatedIngredients = [];
+        
+        $('table tbody tr').each(function() {
+          const id = $(this).data('id');
+          const currentStock = parseInt($(this).find('.current-stock').text());
+          const totalUsed = parseInt($(this).find('.total-used').val()) || 0;
+          const newStock = currentStock - totalUsed;
+          
+          updatedIngredients.push({
+            id: id,
+            used: totalUsed,
+            new_stock: newStock
+          });
+        });
+        
+        $.ajax({
+          url: '/ingredient/update-stock',  
+          method: 'PUT',  
+          contentType: 'application/json',
+          data: JSON.stringify({
+            date: transactionDate.toISOString().split('T')[0],
+            ingredients: updatedIngredients
+          }),
+          success: function(response) {
+            alert('Cập nhật kho thành công!');
+            location.reload();
+          },
+          error: function(error) {
+            alert('Đã xảy ra lỗi khi cập nhật kho!');
+            console.error(error);
+          }
+        });
+      });
+    });
+  </script>
+{% endblock %}

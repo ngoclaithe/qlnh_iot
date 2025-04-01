@@ -1,13 +1,12 @@
-/* Container tổng thể cho trang danh sách nguyên liệu */
+
 .ingredient-container {
     max-width: 1200px;
     margin: 50px auto;
     padding: 20px;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Poppins', sans-serif;
     background-color: #f9f9f9;
 }
 
-/* Phần header */
 .ingredient-container .header {
     display: flex;
     justify-content: space-between;

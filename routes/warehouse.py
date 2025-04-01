@@ -10,7 +10,10 @@ warehouse_bp = Blueprint('warehouse', __name__, url_prefix='/warehouse')
 def list_ingredients():
     ingredients = Ingredient.query.all()
     return render_template('warehouse.html', ingredients=ingredients)
-
+@warehouse_bp.route('/daily_warehouse')
+def daily_transaction():
+    ingredients = Ingredient.query.all()
+    return render_template('daily_warehouse.html', ingredients=ingredients)
 @warehouse_bp.route('/transaction', methods=['GET', 'POST'])
 def transaction():
     if request.method == 'POST':
